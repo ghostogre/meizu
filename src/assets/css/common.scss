@@ -1,0 +1,22 @@
+html, body {
+  font: 14px/1.5 Helvetice, Tahoma, Arial, "Hiragino Sans GB", "Microsoft YaHei", SimSun, Heiti, sana-serif;
+  color: #515151;
+}
+
+html {
+  background-color: #f4f4f4;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both;
+}
