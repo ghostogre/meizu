@@ -28,11 +28,11 @@
       </div>
       <div class="sale">
         <h3 class="title">手机</h3>
-        <goods-list></goods-list>
+        <goods-list :data="phoneSaleData"></goods-list>
       </div>
       <div class="sale">
         <h3 class="title">智能配件</h3>
-        <goods-list></goods-list>
+        <goods-list :data="smartSaleData"></goods-list>
       </div>
     </div>
     <div class="footer">
@@ -58,7 +58,9 @@ export default {
       swiperData: [],
       menuData: [],
       postData: [],
-      hotSaleData: []
+      hotSaleData: [],
+      phoneSaleData: [],
+      smartSaleData: []
     }
   },
   mounted () {
@@ -66,6 +68,8 @@ export default {
     this.getMenuData()
     this.getPostData()
     this.getHotSaleData()
+    this.getPhoneSaleData()
+    this.getSmartSaleData()
   },
   methods: {
     async getSwiperData () {
@@ -83,6 +87,14 @@ export default {
     async getHotSaleData () {
       const { data } = await axios.get('/api/hotSale')
       this.hotSaleData = data
+    },
+    async getPhoneSaleData () {
+      const { data } = await axios.get('/api/phoneSale')
+      this.phoneSaleData = data
+    },
+    async getSmartSaleData () {
+      const { data } = await axios.get('/api/smartSale')
+      this.smartSaleData = data
     }
   }
 }
