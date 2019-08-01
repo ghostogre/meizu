@@ -28,15 +28,18 @@
       </div>
       <div class="sale">
         <h3 class="title">手机</h3>
+        <ad-list :data="phoneData"></ad-list>
         <goods-list :data="phoneSaleData"></goods-list>
       </div>
       <div class="sale">
         <h3 class="title">智能配件</h3>
+        <ad-list :data="smartAdData"></ad-list>
         <goods-list :data="smartSaleData"></goods-list>
       </div>
     </div>
     <div class="footer">
       <!-- 顶部 -->
+      <my-footer></my-footer>
     </div>
   </div>
 </template>
@@ -45,13 +48,17 @@
 import iHeader from '@/components/common/header'
 import swiper from '@/components/common/swiper'
 import goodsList from '@/components/good/goodsList'
+import adList from '@/components/good/adList'
+import myFooter from '@/components/common/footer'
 import axios from 'axios'
 export default {
   name: 'Index',
   components: {
     iHeader,
     swiper,
-    goodsList
+    adList,
+    goodsList,
+    myFooter
   },
   data () {
     return {
@@ -60,7 +67,9 @@ export default {
       postData: [],
       hotSaleData: [],
       phoneSaleData: [],
-      smartSaleData: []
+      smartSaleData: [],
+      phoneData: [],
+      smartAdData: []
     }
   },
   mounted () {
@@ -70,6 +79,8 @@ export default {
     this.getHotSaleData()
     this.getPhoneSaleData()
     this.getSmartSaleData()
+    this.getPhoneAdData()
+    this.getSmartAdData()
   },
   methods: {
     async getSwiperData () {
@@ -95,6 +106,14 @@ export default {
     async getSmartSaleData () {
       const { data } = await axios.get('/api/smartSale')
       this.smartSaleData = data
+    },
+    async getPhoneAdData () {
+      const { data } = await axios.get('/api/phoneRecommend')
+      this.phoneData = data
+    },
+    async getSmartAdData () {
+      const { data } = await axios.get('/api/smartRecommend')
+      this.smartAdData = data
     }
   }
 }
