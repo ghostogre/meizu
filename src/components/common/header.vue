@@ -15,7 +15,7 @@
       <ul class="header-nav fr">
         <template v-for="(item, index) in navData">
           <li :key="index" @mouseenter="showChildren(item)">
-            <a class="nav-item" href="">{{item.name}}</a>
+            <a class="nav-item" href="javascript: void(0);" @click="goToCategory">{{item.name}}</a>
           </li>
         </template>
       </ul>
@@ -75,6 +75,9 @@ export default {
           'translateX': '-50px'
         })
       }, timeOut)
+    },
+    goToCategory () {
+      this.$router.push({ name: 'category' })
     }
   }
 }

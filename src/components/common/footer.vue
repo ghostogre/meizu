@@ -142,7 +142,6 @@ export default {
     color: #999;
   }
 
-  
   .subscribe {
     margin-top: 18px;
 
