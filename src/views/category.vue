@@ -9,8 +9,8 @@
         <span class="arrow">></span>
         <span class="last-bread">手机</span>
       </div>
-      <filter-box :data="filterListData" @filter="getResult"></filter-box>
-      <v-sort></v-sort>
+      <filter-box :data="filterListData" @filter="getQuery"></filter-box>
+      <v-sort @getKey="getSortKey" @getStock="getSortsStock"></v-sort>
       <category-list :data="categoryListData"></category-list>
     </div>
     <v-footer></v-footer>
@@ -37,7 +37,10 @@ export default {
     return {
       categoryListData: [],
       filterListData: [],
-      categoryListCopy: []
+      categoryListCopy: [],
+      currentQuery: null,
+      currentStock: null,
+      currentKey: null
     }
   },
   mounted () {
@@ -55,15 +58,57 @@ export default {
       const { data } = await axios.get('/api/queryList')
       this.filterListData = data
     },
-    getResult (val) {
+
+    getQuery (val) {
+      this.currentQuery = val
+      this.sortGoods()
+    },
+
+    sortGoods () {
       this.categoryListData = [].concat(this.categoryListCopy)
-      Object.keys(val).forEach(key => {
-        if (val[key]) {
-          this.categoryListData = this.categoryListData.filter(item => {
-            return item.features.indexOf(val[key]) >= 0
-          })
-        }
-      })
+      if (this.currentQuery) {
+        Object.keys(this.currentQuery).forEach(key => {
+          if (this.currentQuery[key]) {
+            this.categoryListData = this.categoryListData.filter(item => {
+              return item.features.indexOf(this.currentQuery[key]) >= 0
+            })
+          }
+        })
+      }
+      if (this.currentStock) {
+        this.categoryListData = this.categoryListData.filter((item) => {
+          return item.available
+        })
+      }
+
+      if (this.currentKey === 'recommand') {
+        this.categoryListData.sort((a, b) => {
+          return b.shelveTime - a.shelveTime
+        })
+      } else if (this.currentKey === 'new') {
+        this.categoryListData.sort((a, b) => {
+          return b.publishedTime - a.publishedTime
+        })
+      } else if (this.currentKey === 'low') {
+        this.categoryListData.sort((a, b) => {
+          return b.goodsPrice - a.goodsPrice
+        })
+      } else if (this.currentKey === 'high') {
+        this.categoryListData.sort((a, b) => {
+          return a.goodsPrice - b.goodsPrice
+        })
+      }
+    },
+
+    // 获取排序
+    getSortKey (key) {
+      this.currentKey = key
+      this.sortGoods()
+    },
+
+    getSortsStock (val) {
+      this.currentStock = val
+      this.sortGoods()
     }
   }
 }
