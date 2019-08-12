@@ -12,6 +12,7 @@
       <filter-box :data="filterListData" @filter="getQuery"></filter-box>
       <v-sort @getKey="getSortKey" @getStock="getSortsStock"></v-sort>
       <category-list :data="categoryListData"></category-list>
+      <recommend-list :data="recommendListData"></recommend-list>
     </div>
     <v-footer></v-footer>
   </div>
@@ -24,6 +25,7 @@ import vFooter from '../components/common/footer'
 import filterBox from '../components/good/filterBox'
 import categoryList from '../components/good/categoryList'
 import vSort from '../components/good/sort'
+import recommendList from '../components/good/recommendList'
 export default {
   name: 'category',
   components: {
@@ -31,13 +33,15 @@ export default {
     vFooter,
     filterBox,
     categoryList,
-    vSort
+    vSort,
+    recommendList
   },
   data () {
     return {
       categoryListData: [],
       filterListData: [],
       categoryListCopy: [],
+      recommendListData: [],
       currentQuery: null,
       currentStock: null,
       currentKey: null
@@ -46,6 +50,7 @@ export default {
   mounted () {
     this.getCategoryListData()
     this.getFilterListData()
+    this.getRecommendListData()
   },
   methods: {
     async  getCategoryListData () {
@@ -57,6 +62,11 @@ export default {
     async  getFilterListData () {
       const { data } = await axios.get('/api/queryList')
       this.filterListData = data
+    },
+
+    async getRecommendListData () {
+      const { data } = await axios.get('/api/smartSale')
+      this.recommendListData = data
     },
 
     getQuery (val) {

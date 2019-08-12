@@ -49,28 +49,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.goods-list {
-  float: left;
-  width: 303px;
-  height: 436px;
-  background-color: white;
-  cursor: pointer;
-  transition: all .3s ease;
-  position: relative;
-  margin-top: 10px;
-  margin-right: 9px;
-  overflow: hidden;
-  text-align: center;
-  &:hover {
-    box-shadow: 0 15px 30px rgba(0, 0, 0, .1);
-  }
-
-  &.last-child {
-    margin-right: 0;
-  }
-}
-
 .goods {
+  &-list {
+    float: left;
+    width: 303px;
+    height: 436px;
+    background-color: white;
+    cursor: pointer;
+    transition: all .3s ease;
+    position: relative;
+    margin-top: 10px;
+    margin-right: 9px;
+    overflow: hidden;
+    text-align: center;
+    &:hover {
+      box-shadow: 0 15px 30px rgba(0, 0, 0, .1);
+    }
+
+    &.last-child {
+      margin-right: 0;
+    }
+  }
+
   &-img {
     height: 230px;
     margin-top: 30px;
