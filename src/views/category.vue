@@ -11,7 +11,7 @@
       </div>
       <filter-box :data="filterListData" @filter="getQuery"></filter-box>
       <v-sort @getKey="getSortKey" @getStock="getSortsStock"></v-sort>
-      <category-list :data="categoryListData"></category-list>
+      <category-list :data="categoryListData" @clickItem="goToDetail"></category-list>
       <recommend-list :data="recommendListData"></recommend-list>
     </div>
     <v-footer></v-footer>
@@ -119,6 +119,15 @@ export default {
     getSortsStock (val) {
       this.currentStock = val
       this.sortGoods()
+    },
+
+    goToDetail ({ id }) {
+      this.$router.push({
+        name: 'detail',
+        params: {
+          id
+        }
+      })
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul v-if="data.length > 0" class="clearfix">
-      <li :class="{'last-child': (index + 1) % 4 === 0}" class="goods-list" v-for="(item, index) in data" :key="index">
+      <li @click="clickItem(item)" :class="{'last-child': (index + 1) % 4 === 0}" class="goods-list" v-for="(item, index) in data" :key="index">
         <a :href="item.href">
           <image-list :data="item.colorImageUrls"></image-list>
           <div class="goods-name">{{item.goodsName}}</div>
@@ -43,6 +43,11 @@ export default {
       default () {
         return []
       }
+    }
+  },
+  methods: {
+    clickItem (item) {
+      this.$emit('clickItem', item)
     }
   }
 }

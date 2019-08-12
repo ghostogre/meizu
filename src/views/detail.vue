@@ -1,0 +1,187 @@
+<template>
+  <div class="bg-white">
+    <v-header></v-header>
+    <div class="detail-wrapper">
+      <div class="bread">
+        <span>首页</span>
+        <span class="arrow">></span>
+        <span>全部</span>
+        <span class="arrow">></span>
+        <span class="last-bread">手机</span>
+      </div>
+      <div class="clearfix">
+        <div class="fl">
+          <image-list :data="infoData.colorImageUrls" type="large"></image-list>
+        </div>
+        <div class="fl detail-props">
+          <h1 class="props-title">{{infoData.goodsName}}</h1>
+          <p class="props-desc">{{infoData.goodsDesc}}</p>
+          <div class="prop-sale">
+            <span class="prop-name">价<span class="prop-space"></span>格:</span>
+            <span class="prop-price">￥{{infoData.goodsPrice}}</span>
+          </div>
+          <div>
+            <span class="prop-name">支<span class="prop-space"></span>持:</span>
+            <ul class="service-list">
+              <li class="list-item"><i class="icon-font icon-check-circle"></i>百城速达</li>
+              <li class="list-item"><i class="icon-font icon-check-circle"></i>顺丰包邮</li>
+              <li class="list-item"><i class="icon-font icon-check-circle"></i>七天无理由退货</li>
+            </ul>
+          </div>
+          <div>
+            <span class="prop-name">服<span class="prop-space"></span>务:</span>
+            <span>本商品由魅族负责发货并提供售后服务</span>
+          </div>
+          <div>
+            <span class="prop-name">数<span class="prop-space"></span>量:</span>
+            <div class="clearfix prop-number">
+              <input class="fl prop-input" type="text">
+              <div class="fl change-box">
+                <div class="change-value">+</div>
+                <div class="change-value">-</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <a href="">立即购买</a>
+            <a href="">加入购物车</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <v-footer></v-footer>
+  </div>
+</template>
+
+<script>
+import vFooter from '../components/common/footer'
+import vHeader from '../components/common/header'
+import imageList from '../components/common/imageList'
+import axios from 'axios'
+export default {
+  name: 'detail',
+  components: {
+    vFooter,
+    vHeader,
+    imageList
+  },
+  data () {
+    return {
+      infoData: {}
+    }
+  },
+  mounted () {
+    this.getDetail(this.$route.params)
+  },
+  methods: {
+    async getDetail ({ id }) {
+      const { data } = await axios.get(`/api/categoryList/${id}`)
+      this.infoData = data
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.bg-white {
+  background-color: white;
+}
+
+.bread {
+  height: 40px;
+  line-height: 40px;
+
+  .arrow, .last-bread {
+    color: #999;
+  }
+}
+
+.detail-wrapper {
+  width: 1240px;
+  margin: 0 auto;
+}
+
+.detail-props {
+  width: 675px;
+  font-size: 12px;
+  .props-title {
+    font-size: 24px;
+    font-weight: 400;
+    color: #000;
+    margin-bottom: 10px;
+  }
+
+  .props-desc {
+    font-size: 16px;
+    color: #e22841;
+    margin-bottom: 15px;
+  }
+
+  .prop-name {
+    padding: 0 10px;
+    line-height: 34px;
+
+    .prop-space {
+      padding: 0 12px;
+    }
+  }
+
+  .prop-sale {
+    height: 55px;
+    background-color: #f5f5f5;
+    margin-bottom: 26px;
+
+    .prop-price {
+      font-size: 24px;
+      color: #e02b41;
+      line-height: 55px;
+    }
+  }
+
+  .service-list {
+    display: inline-block;
+    .list-item {
+      display: inline-block;
+      margin-right: 20px;
+
+      i {
+        margin-right: 5px;
+        color: #00c3f5;
+      }
+    }
+  }
+
+  .prop-number {
+    display: inline-block;
+    vertical-align: middle;
+
+    .prop-input {
+      width: 53px;
+      height: 38px;
+      line-height: 38px;
+      border: 1px solid #dcdcdc;
+      color: #333;
+      text-align: center;
+    }
+
+    .change-box {
+      margin-left: 6px;
+    }
+
+    .change-value {
+      width: 20px;
+      height: 16px;
+      font-size: 14px;
+      color: #666666;
+      border: 1px solid #dcdcdc;
+      cursor: pointer;
+      line-height: 14px;
+      text-align: center;
+
+      &:last-child {
+        margin-top: 6px;
+      }
+    }
+  }
+}
+</style>
