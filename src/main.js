@@ -4,6 +4,7 @@ import router from './router'
 import './assets/css/reset.css'
 import './assets/fonts/style.css'
 import './assets/css/common.scss'
+import store from './store'
 
 Vue.config.productionTip = false
 
@@ -11,5 +12,6 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })

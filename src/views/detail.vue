@@ -35,18 +35,24 @@
           <div>
             <span class="prop-name">数<span class="prop-space"></span>量:</span>
             <div class="clearfix prop-number">
-              <input class="fl prop-input" type="text">
+              <input class="fl prop-input" v-model="purchaseQuality" type="number">
               <div class="fl change-box">
-                <div class="change-value">+</div>
-                <div class="change-value">-</div>
+                <div class="change-value" @click="increase">+</div>
+                <div class="change-value" @click="reduce">-</div>
               </div>
             </div>
           </div>
-          <div>
-            <a href="">立即购买</a>
-            <a href="">加入购物车</a>
+          <div class="prop-buy">
+            <a href="javascript: void(0);" class="btn danger mr20" @click="purchase">立即购买</a>
+            <a href="javascript: void(0);" class="btn success" @click="addShopCart">加入购物车</a>
           </div>
         </div>
+      </div>
+      <div class="detail-info__wrapper">
+        <div class="detail-info">
+          <a href="javascript: void(0);" class="info-title">商品详情</a>
+        </div>
+        <img v-for="(item, index) in infoData.information" :key="index" class="detail-images" :src="item" alt="">
       </div>
     </div>
     <v-footer></v-footer>
@@ -67,7 +73,8 @@ export default {
   },
   data () {
     return {
-      infoData: {}
+      infoData: {},
+      purchaseQuality: 1
     }
   },
   mounted () {
@@ -77,6 +84,34 @@ export default {
     async getDetail ({ id }) {
       const { data } = await axios.get(`/api/categoryList/${id}`)
       this.infoData = data
+    },
+    // 增加
+    increase () {
+      this.purchaseQuality = parseInt(this.purchaseQuality) + 1
+    },
+    // 减少
+    reduce () {
+      if (this.purchaseQuality > 1) {
+        this.purchaseQuality = parseInt(this.purchaseQuality) - 1
+      }
+    },
+    addShopCart () {
+      this.$store.commit('ADD_SHOPCART', {
+        data: this.infoData,
+        num: parseInt(this.purchaseQuality)
+      })
+    },
+    purchase () {
+      this.$store.commit('ADD_PURCHASE', {
+        data: this.infoData,
+        num: parseInt(this.purchaseQuality)
+      })
+      this.goToShopcart()
+    },
+    goToShopcart () {
+      this.$router.push({
+        name: 'cart'
+      })
     }
   }
 }
@@ -183,5 +218,40 @@ export default {
       }
     }
   }
+
+  .prop-buy {
+    margin-top: 17px;
+  }
+
+  .mr20 {
+    margin-right: 20px;
+  }
 }
+
+.detail-info__wrapper {
+  font-size: 0;
+  margin-top: 60px;
+  margin-bottom: 80px;
+  .detail-info {
+    height: 62px;
+    border-bottom: 1px solid #dcdcdc;
+  }
+
+  .info-title {
+    font-size: 16px;
+    height: 62px;
+    line-height: 62px;
+    color: #00c3f5;
+    border-bottom: 1px solid #00c3f5;
+    padding: 0 20px;
+    margin-bottom: -1px;
+    box-sizing: border-box;
+    display: inline-block;
+  }
+
+  .detail-images {
+    width: 1240px;
+  }
+}
+
 </style>
