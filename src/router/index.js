@@ -16,12 +16,12 @@ export default new Router({
       component: () => import('@/views/category.vue')
     },
     {
-      path: 'detail/:id',
+      path: '/detail/:id',
       name: 'detail',
       component: () => import('@/views/detail.vue')
     },
     {
-      path: 'cart',
+      path: '/cart',
       name: 'cart',
       component: () => import('@/views/cart.vue')
     }

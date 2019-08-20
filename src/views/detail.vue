@@ -102,7 +102,7 @@ export default {
       })
     },
     purchase () {
-      this.$store.commit('ADD_PURCHASE', {
+      this.$store.commit('ADD_SHOPCART', {
         data: this.infoData,
         num: parseInt(this.purchaseQuality)
       })
