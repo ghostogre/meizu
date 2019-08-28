@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-header></v-header>
-    <div class="shopCart-wrapper">
+    <div v-if="shopCartData.length > 0" class="shopCart-wrapper">
       <table class="shopCart-header">
         <tr>
           <td class="cart-select">
@@ -29,9 +29,9 @@
             <td class="cart-price">￥{{item.goodsPrice}}</td>
             <td class="cart-num">
               <div class="cart-input">
-                <button class="fl">-</button>
+                <button class="fl" @click="reduce(item.id)">-</button>
                 <input class="fl" v-model="item.count" type="number">
-                <button class="fl">+</button>
+                <button class="fl" @click="increase(item.id)">+</button>
               </div>
             </td>
             <td class="cart-total">￥{{item.count * item.goodsPrice}}</td>
@@ -54,11 +54,21 @@
         </div>
       </div>
     </div>
+    <div v-else class="shopcart-empty">
+      <div class="empty-container">
+        <div class="empty-left"></div>
+        <div class="empty-right">
+          <p class="empty-desc">购物车内还没有商品，赶紧去选购吧</p>
+          <a href="javascript: void(0);" class="btn success" @click="goToIndex">返回商城首页</a>
+        </div>
+      </div>
+    </div>
     <v-footer></v-footer>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import vHeader from '../components/common/header'
 import vFooter from '../components/common/footer'
 import { mapGetters } from 'vuex'
@@ -71,6 +81,17 @@ export default {
     ...mapGetters([
       'shopCartData'
     ])
+  },
+  methods: {
+    goToIndex() {
+      this.$router.push({
+        name: 'index'
+      })
+    },
+    ...mapMutations({
+      increase: 'INCREASE_SHOPCART',
+      reduce: 'REDUCE_SHOPCART'
+    })
   }
 }
 </script>
@@ -220,6 +241,41 @@ export default {
       border-left: 1px solid #efefef;
       border-right: 1px solid #efefef;
     }
+  }
+}
+
+.shopcart-empty {
+  width: 1240px;
+  margin: 10px auto;
+  background-color: #fff;
+  display: table;
+  height: 360px;
+  .empty-container {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .empty-left {
+    display: inline-block;
+    width: 100px;
+    height: 114px;
+    background: url(../assets/images/shopcart.png) no-repeat;
+    margin-right: 30px;
+    vertical-align: middle;
+  }
+
+  .empty-right {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+  }
+
+  .empty-desc {
+    color: #666666;
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 18px;
   }
 }
 </style>
