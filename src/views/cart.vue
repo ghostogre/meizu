@@ -68,10 +68,9 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 import vHeader from '../components/common/header'
 import vFooter from '../components/common/footer'
-import { mapGetters } from 'vuex'
 export default {
   components: {
     vHeader,
@@ -83,7 +82,7 @@ export default {
     ])
   },
   methods: {
-    goToIndex() {
+    goToIndex () {
       this.$router.push({
         name: 'index'
       })
