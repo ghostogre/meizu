@@ -5,7 +5,7 @@
       <table class="shopCart-header">
         <tr>
           <td class="cart-select">
-            <input type="checkbox" class="cart-checkbox">
+            <input type="checkbox" :checked="isAllChecked" @click="checkAllGoods(isAllChecked)" class="cart-checkbox">
             <span>全选</span>
           </td>
           <td class="cart-name">商品</td>
@@ -19,7 +19,7 @@
         <table>
           <tr v-for="(item, index) in shopCartData" :key="index" class="cart-product">
             <td class="cart-select">
-              <input type="checkbox" class="cart-checkbox">
+              <input type="checkbox" v-model="item.checked" class="cart-checkbox" @click="check(item.id)">
               <img class="cart-img" :src="item.imageUrl" alt="">
             </td>
             <td class="cart-name">
@@ -43,7 +43,7 @@
       </div>
       <div class="clearfix shopcart-footer">
         <div class="fl">
-          <input type="checkbox" class="cart-checkbox">
+          <input type="checkbox" :checked="isAllChecked" @click="checkAllGoods(isAllChecked)" class="cart-checkbox">
           <span>全选</span>
           <span class="footer-remove">删除选中的商品</span>
           <span>共<span class="footer-number gray">3</span>件商品，已选<span class="footer-number blue">3</span>件商品</span>
@@ -78,7 +78,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'shopCartData'
+      'shopCartData',
+      'isAllChecked'
     ])
   },
   methods: {
@@ -89,7 +90,9 @@ export default {
     },
     ...mapMutations({
       increase: 'INCREASE_SHOPCART',
-      reduce: 'REDUCE_SHOPCART'
+      reduce: 'REDUCE_SHOPCART',
+      check: 'CHECK_GOODS',
+      checkAllGoods: 'CHECK_ALL_GOODS'
     })
   }
 }

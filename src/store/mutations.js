@@ -11,6 +11,7 @@ const mutations = {
     })
     if (!haveData) {
       Vue.set(obj.data, 'count', obj.num)
+      Vue.set(obj.data, 'checked', true)
       state.shopCartData.push(obj.data)
     }
   },
@@ -34,6 +35,22 @@ const mutations = {
         break
       }
     }
+  },
+
+  // 选中商品
+  CHECK_GOODS (state, id) {
+    state.shopCartData.forEach(item => {
+      if (item.id === id) {
+        item.checked = !item.checked
+      }
+    })
+  },
+
+  // 全选
+  CHECK_ALL_GOODS (state, checked) {
+    state.shopCartData.forEach(item => {
+      item.checked = !checked
+    })
   }
 }
 
