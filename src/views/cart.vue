@@ -36,7 +36,7 @@
             </td>
             <td class="cart-total">￥{{item.count * item.goodsPrice}}</td>
             <td class="cart-operator">
-              <i class="icon-font icon-close"></i>
+              <i class="icon-font icon-close" @click="deleteGood(item.id)"></i>
             </td>
           </tr>
         </table>
@@ -46,11 +46,11 @@
           <input type="checkbox" :checked="isAllChecked" @click="checkAllGoods(isAllChecked)" class="cart-checkbox">
           <span>全选</span>
           <span class="footer-remove">删除选中的商品</span>
-          <span>共<span class="footer-number gray">3</span>件商品，已选<span class="footer-number blue">3</span>件商品</span>
+          <span>共<span class="footer-number gray">{{shopCartTotal}}</span>件商品，已选<span class="footer-number blue">{{checkedGoodsTotal}}</span>件商品</span>
         </div>
         <div class="fr">
-          <span>已优惠<span class="footer-number red">0.00</span>元，合计（不含运费）: <span class="footer-number red footer-total">￥4000</span></span>
-          <a href="javascript: void(0);" class="btn success">去结算</a>
+          <span>已优惠<span class="footer-number red">1</span>元，合计（不含运费）: <span class="footer-number red footer-total">￥{{checkedGoodsPrice}}</span></span>
+          <a href="javascript: void(0);" class="btn success" :class="{'cancel': checkedGoodsTotal === 0}">去结算</a>
         </div>
       </div>
     </div>
@@ -64,6 +64,8 @@
       </div>
     </div>
     <v-footer></v-footer>
+
+    <v-dialog></v-dialog>
   </div>
 </template>
 
@@ -71,15 +73,20 @@
 import { mapMutations, mapGetters } from 'vuex'
 import vHeader from '../components/common/header'
 import vFooter from '../components/common/footer'
+import vDialog from '../components/good/dialog'
 export default {
   components: {
     vHeader,
-    vFooter
+    vFooter,
+    vDialog
   },
   computed: {
     ...mapGetters([
       'shopCartData',
-      'isAllChecked'
+      'isAllChecked',
+      'shopCartTotal',
+      'checkedGoodsTotal',
+      'checkedGoodsPrice'
     ])
   },
   methods: {
@@ -92,7 +99,8 @@ export default {
       increase: 'INCREASE_SHOPCART',
       reduce: 'REDUCE_SHOPCART',
       check: 'CHECK_GOODS',
-      checkAllGoods: 'CHECK_ALL_GOODS'
+      checkAllGoods: 'CHECK_ALL_GOODS',
+      deleteGood: 'DEL_SHOPCART'
     })
   }
 }
@@ -278,6 +286,17 @@ export default {
     font-weight: bold;
     margin-bottom: 15px;
     font-size: 18px;
+  }
+}
+
+.cancel {
+  color: #999;
+  border-color: #efefef;
+  background-color: #efefef;
+  transition: all .2s ease-in-out;
+  &:hover {
+    border-color: #f6f6f6;
+    background-color: #f6f6f6;
   }
 }
 </style>

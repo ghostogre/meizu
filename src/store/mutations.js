@@ -51,6 +51,15 @@ const mutations = {
     state.shopCartData.forEach(item => {
       item.checked = !checked
     })
+  },
+
+  // 删除
+  DEL_SHOPCART (state, id) {
+    for (let i = 0, len = state.shopCartData.length; i < len; i++) {
+      if (state.shopCartData[i].id === id) {
+        state.shopCartData.splice(i, 1)
+      }
+    }
   }
 }
 
