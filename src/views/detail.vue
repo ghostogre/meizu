@@ -56,6 +56,13 @@
       </div>
     </div>
     <v-footer></v-footer>
+
+    <v-dialog :show.sync="dialogShow" :confirm-button-show="false" :cancel-button-show="false" :width="360" :height="80">
+      <div>
+        <i class="icon-font icon-check-circle add-success"></i>加入购物车
+      </div>
+      <a class="go-shopcart" href="javascript:void(0);" @click="goToShopcart">进入购物车</a>
+    </v-dialog>
   </div>
 </template>
 
@@ -63,18 +70,21 @@
 import vFooter from '../components/common/footer'
 import vHeader from '../components/common/header'
 import imageList from '../components/common/imageList'
+import vDialog from '../components/good/dialog'
 import axios from 'axios'
 export default {
   name: 'detail',
   components: {
     vFooter,
     vHeader,
-    imageList
+    imageList,
+    vDialog
   },
   data () {
     return {
       infoData: {},
-      purchaseQuality: 1
+      purchaseQuality: 1,
+      dialogShow: false
     }
   },
   mounted () {
@@ -100,6 +110,7 @@ export default {
         data: this.infoData,
         num: parseInt(this.purchaseQuality)
       })
+      this.dialogShow = true
     },
     purchase () {
       this.$store.commit('ADD_SHOPCART', {
@@ -254,4 +265,13 @@ export default {
   }
 }
 
+.add-success {
+  color: #00c3f5;
+  margin-right: 5px;
+}
+
+.go-shopcart {
+  color: #00c3f5;
+  text-decoration: underline;
+}
 </style>

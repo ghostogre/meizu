@@ -36,7 +36,7 @@
             </td>
             <td class="cart-total">￥{{item.count * item.goodsPrice}}</td>
             <td class="cart-operator">
-              <i class="icon-font icon-close" @click="deleteGood(item.id)"></i>
+              <i class="icon-font icon-close" @click="handleDelete(item.id)"></i>
             </td>
           </tr>
         </table>
@@ -50,7 +50,7 @@
         </div>
         <div class="fr">
           <span>已优惠<span class="footer-number red">1</span>元，合计（不含运费）: <span class="footer-number red footer-total">￥{{checkedGoodsPrice}}</span></span>
-          <a href="javascript: void(0);" class="btn success" :class="{'cancel': checkedGoodsTotal === 0}">去结算</a>
+          <a href="javascript: void(0);" class="btn success" :class="{'cancel': checkedGoodsTotal === 0}" @click="goToOrder">去结算</a>
         </div>
       </div>
     </div>
@@ -65,7 +65,9 @@
     </div>
     <v-footer></v-footer>
 
-    <v-dialog></v-dialog>
+    <v-dialog :show.sync="isShow" title="提示" :width="500" @confirm="confirmDelete">
+      <div style="height: 120px;line-height: 120px;">您确定删除该商品吗？</div>
+    </v-dialog>
   </div>
 </template>
 
@@ -89,6 +91,12 @@ export default {
       'checkedGoodsPrice'
     ])
   },
+  data () {
+    return {
+      isShow: false,
+      currentId: null
+    }
+  },
   methods: {
     goToIndex () {
       this.$router.push({
@@ -101,7 +109,20 @@ export default {
       check: 'CHECK_GOODS',
       checkAllGoods: 'CHECK_ALL_GOODS',
       deleteGood: 'DEL_SHOPCART'
-    })
+    }),
+    handleDelete (id) {
+      this.isShow = true
+      this.currentId = id
+    },
+    confirmDelete () {
+      this.deleteGood(this.currentId)
+      this.isShow = false
+    },
+    goToOrder () {
+      this.$router.push({
+        path: '/order'
+      })
+    }
   }
 }
 </script>
