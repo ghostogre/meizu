@@ -10,7 +10,7 @@
           <div class="dialog-content" :style="dialogContent">
             <slot></slot>
           </div>
-          <div class="dialog-footer" v-if="confirmButtonShow || cancelButtnShow">
+          <div class="dialog-footer" v-if="confirmButtonShow || cancelButtonShow">
             <div v-show="confirmButtonShow" class="btn success mr20 wd100" @click="confirm">{{confirmButtonText}}</div>
             <div v-show="cancelButtonShow" class="btn cancel wd100" @click="cancel">{{cancelButtonText}}</div>
           </div>
@@ -41,6 +41,10 @@ export default {
       default: ''
     },
     confirmButtonShow: {
+      type: Boolean,
+      default: false
+    },
+    cancelButtonShow: {
       type: Boolean,
       default: false
     },

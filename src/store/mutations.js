@@ -4,7 +4,7 @@ const mutations = {
     let haveData = false
     state.shopCartData.forEach(element => {
       // eslint-disable-next-line no-cond-assign
-      if (element.id = obj.data.id) {
+      if (element.id === obj.data.id) {
         haveData = true
         element.count += obj.num
       }
@@ -60,6 +60,11 @@ const mutations = {
         state.shopCartData.splice(i, 1)
       }
     }
+  },
+
+  // 提交订单后删除
+  REMOVE_GOODS (state) {
+    state.shopCartData = state.shopCartData.map(item => !item.checked)
   }
 }
 
