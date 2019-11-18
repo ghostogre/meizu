@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #container {
+      width: 300px;
+      height: 300px;
+      border: 3px dotted red;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    window.onload = function () {
+      function handleDropover(event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+
+      function handleDrop(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        /***** 访问拖拽文件 *****/
+        // 对于拖拽操作，FileList 存放在拖拽事件的回调函数参数里，通过 event.dataTransfer.files 访问即可
+        const files = event.dataTransfer.files;
+        console.log(files);
+        /**********/
+      }
+
+      const target = document.querySelector("#container");
+      target.addEventListener("dragover", handleDropover);
+      target.addEventListener("drop", handleDrop);
+    }
+  </script>
+</body>
+</html>

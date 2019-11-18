@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>FileReader</title>
+  <style>
+  </style>
+  <script>
+    window.onload = function () {
+      if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
+        throw new Error("当前浏览器对FileAPI的支持不完善");
+      }
+      function handleFileSelect(event) {
+        let { files } = event.target;
+        if (!files.length) {
+          return;
+        }
+
+        // 在对于超大文件，一般采用分片上传的思路解决。File 是 Blob 的一个特例。而 Blob 上有一个slice 方法，通过它，前端就可以实现分片读取大文件的操作。
+        const file = files[0]; // 这里只处理第一个文件
+        console.log(file.slice)
+        // 读取前五个字符
+        const blob = file.slice(0, 5);
+
+        const reader = new FileReader();
+
+        reader.onload = ev => console.log(ev.target.result);
+        reader.readAsText(blob);
+      }
+
+      document.querySelector("#files").addEventListener("change", handleFileSelect, false);
+    }
+  </script>
+</head>
+<body>
+  <input type="file" id="files" multiple />
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>FileReader</title>
+  <style>
+  </style>
+  <script>
+    window.onload = function () {
+      if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
+        throw new Error("当前浏览器对FileAPI的支持不完善");
+      }
+      function handleFileSelect(event) {
+        const { files } = event.target;
+        // event.target.files 是一个FileList对象，它是一个由File对象组成的列表。
+        // 每个 File 对象，保存着选中的对应文件的属性。常用的有：
+        // name：文件名
+        // type：文件类型
+        // size：文件大小
+        if (!files.length) {
+          console.log("没有选择文件");
+          return;
+        }
+
+        // 通过 type 属性，过滤掉非图片类型的文件，只展示图片类型文件的信息
+        const innerHTML = [];
+        const reImage = /image.*/;
+
+        let vm = document.createDocumentFragment(),
+          loaded = 0, // 完成加载的图片数量
+          total = 0; // 总共图片数量
+
+        for (let file of files) {
+          reImage.test(file.type) && ++total;
+        }
+
+        // onloadstart
+        const handleLoadStart = (ev, file) => {
+          console.log(`>>> start load ${file.name}`);
+        }
+
+        // onload
+        const handleOnload = (ev, file) => {
+          console.log(`<<< end load ${file.name}`);
+
+          const img = document.createElement('img');
+          img.width = 250;
+          img.height = 250;
+          img.src = ev.target.result;
+          console.log(ev.target.result);
+
+          vm.appendChild(img);
+
+          if (++loaded == total) {
+            document.querySelector('#images').appendChild(vm);
+          }
+        }
+
+        const handleProgress = (ev, file) => {
+          if (!ev.lengthComputable) {
+            return;
+          }
+          // 计算进度，并且以百分比形式展示
+          const percent = Math.round((ev.loaded / ev.total) * 100);
+          console.log(`====loaded: ${ev.loaded}====total: ${ev.total}`)
+          console.log(`<<< Loding ${file.name}, progress is ${percent}%`);
+        };
+
+        for (let file of files) {
+          if (!reImage.test(file.type)) {
+            continue;
+          }
+
+          // innerHTML.push(
+          //   `
+          //   <li>
+          //     <strong>${file.name}</strong>
+          //     (${file.type || 'n/a'}) -
+          //     ${file.size} bytes
+          //   </li>
+          //   `
+          // )
+
+          const reader = new FileReader();
+          reader.onloadstart = ev => handleLoadStart(ev, file);
+          reader.onprogress = ev => handleProgress(ev, file);
+          reader.onload = ev => handleOnload(ev, file);
+          // 读取文件对象
+          reader.readAsDataURL(file);
+        }
+
+        document.querySelector("#list").innerHTML = `<ul>${innerHTML.join("")}</ul>`;
+        console.log("选中的文件信息是：", files);
+
+        // 文件读取需要使用FileReader对象，它常用 3 个回调方法：
+
+        // onload: 文件读取完成
+        // onloadstart：文件上传开始
+        // onprogress : 文件上传中触发
+
+        // 和Image类似，在读取文件之前，需要先绑定事件处理。
+        // 它读取操作有：readAsArrayBuffer、readAsDataURL、readAsBinaryString、readAsText。传入的参数就是File对象。
+
+        // 那么这几个方法有什么区别呢？不同的读取方式，回调事件onload接受到的event.target.result不相同。
+        // 比如，readAsDataURL读取的话，result 是一个图片的 url。
+
+      }
+
+      document.querySelector("#files").addEventListener("change", handleFileSelect, false);
+    }
+  </script>
+</head>
+<body>
+  <input type="file" id="files" multiple />
+  <div id="list"></div>
+  <div id="images"></div>
+</body>
+</html>
